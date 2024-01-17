@@ -27,7 +27,7 @@ export class ColaboradoresComponent implements OnInit {
     });
   }
 
-  buscarColaboradores(){
+  buscarColaboradores(): void{
     this.colaboresService.buscarListaColaboradores().subscribe(
       {
         next: (data)=>{
@@ -39,7 +39,7 @@ export class ColaboradoresComponent implements OnInit {
       }
     )
   }
-  salvarColaborador(){
+  salvarColaborador(): void{
     if (this.formulario.valid) {
       this.colaboresService.salvarColaborador(this.formulario.getRawValue()).subscribe(
         {
@@ -55,7 +55,7 @@ export class ColaboradoresComponent implements OnInit {
       window.alert("Colaborador salvo com sucesso")
     }
   }
-  apagarColaborador(id: number){
+  apagarColaborador(id: number): void{
     this.colaboresService.apagarColaborador(id).subscribe(
       {
         next: ()=>{

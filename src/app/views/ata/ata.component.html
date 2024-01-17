@@ -1,1 +1,34 @@
-<p>ata works!</p>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    Ata
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="formulario" class="row">
+                        <div class="col-12 col-md-4">
+                            <label for="colaborador" class="form-label">Nome do workshop</label>
+                            <select class="form-select" aria-label="Default select example" (change)="mudarValorData($event)">
+                                <option selected>Selecione...</option>
+                                <option *ngFor="let workshop of listaWorkshop" value="{{workshop.id}}">{{workshop.nome}}</option>
+                              </select>
+                        </div>
+                        <div class="col-12 col-md-4 mb-6">
+                            <label for="colaborador" class="form-label">Data do evento</label>
+                            <input type="date" class="form-control" id="colaborador" aria-describedby="colaborador" formControlName="dataRealizacao" >
+                        </div>
+                        <div class="col-12 col-md-4 mb-6">
+                            <label for="colaborador" class="form-label">Colaborador</label>
+                            <select class="form-select" aria-label="Default select example">
+                                <option selected>Selecione</option>
+                                <option *ngFor="let colaborador of listaColaboradoes" value="{{colaborador.id}}">{{colaborador.nome}}</option>
+                              </select>
+                        </div>
+                    </form>
+                    <button  type="submit" class="btn btn-primary mt-5">Enviar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

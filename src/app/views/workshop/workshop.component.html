@@ -3,7 +3,7 @@
         <div class="col">
             <div class="card">
                 <div class="card-header">
-                    Colaboradores
+                    Workshop
                 </div>
                 <div class="card-body">
                     <form [formGroup]="formulario" class="row">
@@ -13,14 +13,14 @@
                         </div>
                         <div class="col-12 col-md-6 mb-6">
                             <label for="colaborador" class="form-label">Data do evento</label>
-                            <input type="date" class="form-control" id="colaborador" aria-describedby="colaborador" formControlName="nome" >
+                            <input type="date" class="form-control" id="colaborador" aria-describedby="colaborador" formControlName="dataRealizacao" >
                         </div>
                         <div class="mb-6">
                             <label for="colaborador" class="form-label">Descrição</label>
-                            <textarea type="text" class="form-control" id="colaborador" aria-describedby="colaborador" formControlName="nome" ></textarea>
+                            <textarea type="text" class="form-control" id="colaborador" aria-describedby="colaborador" formControlName="descricao" ></textarea>
                         </div>
                     </form>
-                    <button (click)="salvarWorkshop()" type="submit" class="btn btn-primary">Submit</button>
+                    <button (click)="salvarWorkshop()" type="submit" class="btn btn-primary mt-5">Submit</button>
                 </div>
                 <div class="card-footer">
                 </div>
@@ -39,9 +39,9 @@
                         <td>{{workshop.id}}</td>
                         <td>{{workshop.nome}}</td>
                         <td>{{workshop.descricao}}</td>
-                        <td>{{workshop.dataRealizacao}}</td>
+                        <td>{{filtroDeData(workshop.dataRealizacao)}}</td>
                         
-                        <td><button class="btn btn-danger" (click)="apagarWorkshop(workshop.id)">Apagar</button></td>
+                        <td class="d-flex justify-content-end"><button class="btn btn-danger" (click)="apagarWorkshop(workshop.id)">X</button></td>
                       </tr>
                     </tbody>
                   </table>
