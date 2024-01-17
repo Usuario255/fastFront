@@ -1,0 +1,40 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    Colaboradores
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="formulario">
+                        <div class="mb-3">
+                            <label for="colaborador" class="form-label">Nome do colaborador</label>
+                            <input type="text" class="form-control" id="colaborador" aria-describedby="colaborador" formControlName="nome" >
+                        </div>
+                    </form>
+                    <button (click)="salvarColaborador()" type="submit" class="btn btn-primary">Submit</button>
+                </div>
+                <div class="card-footer">
+                    <table class="table">
+                        <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Nome</th>
+                            <th scope="col"></th>
+                            
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let colaborador of listaColaboradores">
+                            <td>{{colaborador.id}}</td>
+                            <td>{{colaborador.nome}}</td>
+                            
+                            <td><button class="btn btn-danger" (click)="apagarColaborador(colaborador.id)">Apagar</button></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
