@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { WorkshopService } from '../workshop/workshop.service';
 import { Workshop } from 'src/app/interface/Workshop';
 import { Colaborador } from 'src/app/interface/Colaborado';
-import { ColaboradoresService } from '../colaboradores/colaboradores.service';
+import { Ata } from 'src/app/interface/Ata';
+import { AtaService } from './ata.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-ata',
@@ -12,52 +13,65 @@ import { ColaboradoresService } from '../colaboradores/colaboradores.service';
 })
 export class AtaComponent implements OnInit {
   formulario!: FormGroup;
-
+  ata!: Ata;
   listaWorkshop!: Workshop[];
-  listaColaboradoes!: Colaborador[];
+  listaColaboradoes: Colaborador[] = [];
 
-  constructor(private fb: FormBuilder, private workshopService: WorkshopService, private colaboradorService: ColaboradoresService) {
+  constructor(private fb: FormBuilder, private ataService: AtaService) {
 
   }
+  
+
 
   ngOnInit(): void {
     this.formulario = this.fb.group({
       workshop: ['', Validators.required],
       colaborador: [''],
-      dataRealizacao: ['', Validators.required]
+      dataRealizacao: ['', Validators.required],
+      descricao: ['', Validators.required]
     });
-    this.buscarColaborador();
-    this.buscarWorkshop();
   }
-
-  buscarWorkshop(): void {
-    this.workshopService.buscarListaWorkshop().subscribe(
+  salvarAta(): void {
+    this.ata = {
+      Colaboradores: this.listaColaboradoes,
+      Workshop: {
+        dataRealizacao: this.formulario.get('dataRealizacao')?.value,
+        descricao: this.formulario.get('descricao')?.value,
+        nome: this.formulario.get('workshop')?.value
+      }
+    }
+    this.ataService.salvarAta(this.ata).subscribe(
       {
-        next: (data: Workshop[]) => {
-          this.listaWorkshop = data;
-        },
-        error(err) {
-          console.log(err)
-        },
+        next: (data: any) => {
+          Swal.fire({
+            title: "Sucesso",
+            text: "Ata criada com sucesso",
+            icon: "success"
+          });
+        }
       }
     )
   }
-
-  buscarColaborador(): void {
-    this.colaboradorService.buscarListaColaboradores().subscribe(
-      {
-        next: (data: Colaborador[]) => {
-          this.listaColaboradoes = data;
-        },
-        error(err) {
-          console.log(err)
-        },
-      }
-    )
+  adcionarColabordor(): void {
+    let nome = this.formulario.get('colaborador')?.value
+    if (nome.length > 0) {
+      Swal.fire({
+        title: "Sucesso",
+        text: "Colaborador adcionado com sucesso com sucesso",
+        icon: "success"
+      });
+      this.listaColaboradoes.push({
+        nome: this.formulario.get('colaborador')?.value
+      })
+    }else{
+      Swal.fire({
+        title: "Aviso",
+        text: "Preencha o campo colaborador",
+        icon: "warning"
+      });
+    }
   }
-
-  mudarValorData(data: any): void {
-    let index = this.listaWorkshop.findIndex((a) => a.id == data.target.value);
-    this.formulario.get('dataRealizacao')?.setValue(this.listaWorkshop[index].dataRealizacao.toLocaleString().split("T")[0]);
+  reoverColaborador(i:any){
+    this.listaColaboradoes.splice(i, 1);
   }
 }

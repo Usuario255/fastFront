@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { WorkshopService } from './workshop.service';
+import Swal from 'sweetalert2';
+import { Workshop } from 'src/app/interface/Workshop';
 
 @Component({
   selector: 'app-workshop',
@@ -9,15 +11,18 @@ import { WorkshopService } from './workshop.service';
 })
 export class WorkshopComponent implements OnInit {
   formulario!: FormGroup;
+  listaWorkshop: Workshop[] = [];
+  workshop!: Workshop;
+  dataFormatada:any 
+  idWorkshop?: string;
+  editando:boolean = false;
 
-  listaWorkshop: any;
-  
-  constructor(private fb: FormBuilder, private workshopService:WorkshopService ){
+  constructor(private fb: FormBuilder, private workshopService: WorkshopService) {
 
   }
-  
+
   ngOnInit(): void {
-    this.buscarWorkshop()
+ 
     this.formulario = this.fb.group({
       nome: ['', Validators.required],
       dataRealizacao: ['', Validators.required],
@@ -25,54 +30,35 @@ export class WorkshopComponent implements OnInit {
     });
   }
 
-  buscarWorkshop(){
-    this.workshopService.buscarListaWorkshop().subscribe(
-      {
-        next: (data)=>{
-          this.listaWorkshop = data
-        },
-        error(err) {
-          console.log(err)
-        },
-      }
-    )
-  }
-
-  salvarWorkshop(){
+  salvarWorkshop() {
     if (this.formulario.valid) {
+      
       this.workshopService.salvarWorkshop(this.formulario.getRawValue()).subscribe(
         {
-          next: ()=>{
-            this.buscarWorkshop();
-            window.alert("Workshop salvo com sucesso ");
-            
+          next: () => {
+
+            Swal.fire({
+              title: "Sucesso",
+              text: "Workshop criado com sucesso",
+              icon: "success"
+            });
+
           },
           error(err) {
             console.log(err);
           },
         }
       )
-    }else{
-      window.alert("Preencha todos os campos ");
+    } else {
+      Swal.fire({
+        title: "Aviso",
+        text: "Preencha todos os campos",
+        icon: "warning"
+      });
     }
   }
-
-  apagarWorkshop(id: number){
-    this.workshopService.apagarWorkshop(id).subscribe(
-      {
-        next: ()=>{
-          this.buscarWorkshop();
-          window.alert("Colaborador apagado com sucesso");
-        },
-        error(err) {
-          console.log(err);
-        },
-      }
-    )
-  }
-
-  filtroDeData(data:string): string{
-    let dia = data.split('T');
+  filtroDeData(data: Date | string): string {
+    let dia = data.toString().split('T');
     return dia[0];
   }
 }

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ColaboradoresService } from './colaboradores.service';
+import Swal from 'sweetalert2';
+import { Colaborador } from 'src/app/interface/Colaborado';
 
 @Component({
   selector: 'app-colaboradores',
@@ -10,27 +12,28 @@ import { ColaboradoresService } from './colaboradores.service';
 export class ColaboradoresComponent implements OnInit {
   formulario: FormGroup;
 
+  idColaborador?: string
   listaColaboradores: any;
-  
-  constructor(private fb: FormBuilder, private colaboresService: ColaboradoresService ){
+  editando: boolean = false;
+
+  constructor(private fb: FormBuilder, private colaboresService: ColaboradoresService) {
 
     this.formulario = this.fb.group({
       nome: ['', Validators.required],
     });
 
   }
-  
+
   ngOnInit(): void {
-    this.buscarColaboradores()
     this.formulario = this.fb.group({
       nome: ['', Validators.required],
     });
   }
 
-  buscarColaboradores(): void{
-    this.colaboresService.buscarListaColaboradores().subscribe(
+  buscarColaboradores(id: any): void {
+    this.colaboresService.buscarListaColaboradores(id).subscribe(
       {
-        next: (data)=>{
+        next: (data) => {
           this.listaColaboradores = data
         },
         error(err) {
@@ -39,34 +42,43 @@ export class ColaboradoresComponent implements OnInit {
       }
     )
   }
-  salvarColaborador(): void{
+
+  salvarColaborador(): void {
     if (this.formulario.valid) {
       this.colaboresService.salvarColaborador(this.formulario.getRawValue()).subscribe(
         {
-          next: ()=>{
-            this.buscarColaboradores()
+          next: () => {
+            Swal.fire({
+              title: "Sucesso",
+              text: "Colaborador criado com sucesso",
+              icon: "success"
+            });
           },
           error(err) {
             console.log(err)
           },
         }
       )
-    }else{
-      window.alert("Colaborador salvo com sucesso")
+    } else {
+      Swal.fire({
+        title: "Aviso",
+        text: "Preencha todos os campos",
+        icon: "warning"
+      });
     }
   }
-  apagarColaborador(id: number): void{
-    this.colaboresService.apagarColaborador(id).subscribe(
-      {
-        next: ()=>{
-          this.buscarColaboradores()
-          window.alert("Colaborador apagado com sucesso")
-        },
-        error(err) {
-          console.log(err)
-        },
-      }
-    )
+
+
+  editarcolaborador(colaborador: Colaborador): void {
+    this.formulario.get('nome')?.setValue(colaborador.nome);
+    this.idColaborador = colaborador.id;
+    this.editando = true;
+  }
+
+  cancelarEdicao() {
+    this.formulario.get('nome')?.setValue('');
+    this.idColaborador = '';
+    this.editando = false;
   }
 
 }

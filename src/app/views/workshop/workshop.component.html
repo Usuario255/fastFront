@@ -20,31 +20,11 @@
                             <textarea type="text" class="form-control" id="colaborador" aria-describedby="colaborador" formControlName="descricao" ></textarea>
                         </div>
                     </form>
-                    <button (click)="salvarWorkshop()" type="submit" class="btn btn-primary mt-5">Submit</button>
+                    <button (click)="salvarWorkshop()" type="submit" class="btn btn-primary m-2 ">Enviar</button>
+                   
                 </div>
                 <div class="card-footer">
                 </div>
-                <table class="table">
-                    <thead>
-                      <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Nome</th>
-                        <th scope="col">Descrição</th>
-                        <th scope="col">Data do evento</th>
-                        
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let workshop of listaWorkshop">
-                        <td>{{workshop.id}}</td>
-                        <td>{{workshop.nome}}</td>
-                        <td>{{workshop.descricao}}</td>
-                        <td>{{filtroDeData(workshop.dataRealizacao)}}</td>
-                        
-                        <td class="d-flex justify-content-end"><button class="btn btn-danger" (click)="apagarWorkshop(workshop.id)">X</button></td>
-                      </tr>
-                    </tbody>
-                  </table>
             </div>
         </div>
     </div>

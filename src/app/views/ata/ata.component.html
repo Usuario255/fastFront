@@ -9,24 +9,38 @@
                     <form [formGroup]="formulario" class="row">
                         <div class="col-12 col-md-4">
                             <label for="colaborador" class="form-label">Nome do workshop</label>
-                            <select class="form-select" aria-label="Default select example" (change)="mudarValorData($event)">
-                                <option selected>Selecione...</option>
-                                <option *ngFor="let workshop of listaWorkshop" value="{{workshop.id}}">{{workshop.nome}}</option>
-                              </select>
+                            <input type="text" class="form-control" id="colaborador" aria-describedby="colaborador" formControlName="workshop" >
                         </div>
                         <div class="col-12 col-md-4 mb-6">
                             <label for="colaborador" class="form-label">Data do evento</label>
                             <input type="date" class="form-control" id="colaborador" aria-describedby="colaborador" formControlName="dataRealizacao" >
                         </div>
+                        
                         <div class="col-12 col-md-4 mb-6">
-                            <label for="colaborador" class="form-label">Colaborador</label>
-                            <select class="form-select" aria-label="Default select example">
-                                <option selected>Selecione</option>
-                                <option *ngFor="let colaborador of listaColaboradoes" value="{{colaborador.id}}">{{colaborador.nome}}</option>
-                              </select>
+                            <label for="colaborador" class="form-label">Colaborador </label>
+                            <input type="text" class="form-control" id="colaborador" aria-describedby="colaborador" formControlName="colaborador" >
+                          
+                            <button (click)="adcionarColabordor()" class="btn btn-primary mt-5">Add </button>
+                        </div>
+                        <div class="mb-12">
+                            <label for="colaborador" class="form-label">Descrição</label>
+                            <textarea type="text" class="form-control" id="colaborador" aria-describedby="colaborador" formControlName="descricao" ></textarea>
                         </div>
                     </form>
-                    <button  type="submit" class="btn btn-primary mt-5">Enviar</button>
+                    <small>Colaboradores: {{this.listaColaboradoes.length}}</small>
+                    <ul class="list-group">
+                        <li class="list-group-item" *ngFor="let colaborador of listaColaboradoes;let i = index"><div class="row">
+                            <span class="col-11">
+                                {{colaborador.nome}} 
+                            </span>
+                            <button (click)="reoverColaborador(i)" class="btn btn-danger col-1 " >remover</button>
+                        </div>
+                    </li>
+                      </ul>
+                    <button  (click)="salvarAta()" type="submit" class="btn btn-primary mt-5">Enviar</button>
+                </div>
+                <div class="card-footer">
+                    
                 </div>
             </div>
         </div>
